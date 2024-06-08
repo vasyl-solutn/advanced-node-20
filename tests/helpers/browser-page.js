@@ -4,7 +4,7 @@ const userFactory = require('../factories/userFactory');
 
 async function build() {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
   });
   const page = await browser.newPage();
   return { browser, page };

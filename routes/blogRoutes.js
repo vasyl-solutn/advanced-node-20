@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const cleanCache = require('../middlewares/cleanCache');
 
-// const User = require("../models/User");
 const Blog = require("../models/Blog");
 
 module.exports = app => {

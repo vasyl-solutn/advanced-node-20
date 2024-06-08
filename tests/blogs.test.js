@@ -1,24 +1,24 @@
-const Page = require('./helpers/page');
+const { build, login, getContentsOf, get, post } = require('./helpers/browser-page');
 
 let page;
+let browser;
 
 beforeEach(async () => {
-  page = await Page.build();
-  await page.goto('localhost:3000');
+  ({browser, page} = await build());
 });
 
 afterEach(async () => {
-  await page.close();
+  await browser.close();
 });
 
 describe('When logged in', () => {
   beforeEach(async () => {
-    await page.login();
+    await login(page);
     await page.click('a.btn-floating');
   });
 
   test('can see blog create form', async () => {
-    const label = await page.getContentsOf('form label');
+    const label = await getContentsOf(page, 'form label');
 
     expect(label).toEqual('Blog Title');
   });
@@ -31,17 +31,17 @@ describe('When logged in', () => {
     });
 
     test('Submitting takes user to review screen', async () => {
-      const text = await page.getContentsOf('h5');
+      const text = await getContentsOf(page, 'h5');
 
       expect(text).toEqual('Please confirm your entries');
     });
 
     test('Submitting then saving adds blog to index page', async () => {
       await page.click('button.green');
-      await page.waitFor('.card');
+      await page.waitForSelector('.card');
 
-      const title = await page.getContentsOf('.card-title');
-      const content = await page.getContentsOf('p');
+      const title = await getContentsOf(page, '.card-title');
+      const content = await getContentsOf(page, 'p');
 
       expect(title).toEqual('My Title');
       expect(content).toEqual('My Content');
@@ -54,8 +54,8 @@ describe('When logged in', () => {
     });
 
     test('the form shows an error message', async () => {
-      const titleError = await page.getContentsOf('.title .red-text');
-      const contentError = await page.getContentsOf('.content .red-text');
+      const titleError = await getContentsOf(page, '.title .red-text');
+      const contentError = await getContentsOf(page, '.content .red-text');
 
       expect(titleError).toEqual('You must provide a value');
       expect(contentError).toEqual('You must provide a value');
@@ -64,26 +64,20 @@ describe('When logged in', () => {
 });
 
 describe('User is not logged in', () => {
-  const actions = [
-    {
-      method: 'get',
-      path: '/api/blogs'
-    },
-    {
-      method: 'post',
-      path: '/api/blogs',
-      data: {
+  describe('and run get /api/blogs', () => {
+    test('request is prohibited', async () => {
+      const result = await get(page, 'http://localhost:3000/api/blogs');
+      expect(result).toEqual({ error: 'You must log in!' });
+    });
+  })
+
+  describe('and run post blog creation', () => {
+    test('request is prohibited', async () => {
+      const result = await post(page, 'http://localhost:3000/api/blogs', {
         title: 'T',
         content: 'C'
-      }
-    }
-  ];
-
-  test('Blog related actions are prohibited', async () => {
-    const results = await page.execRequests(actions);
-
-    for (let result of results) {
+      });
       expect(result).toEqual({ error: 'You must log in!' });
-    }
-  });
+    });
+  })
 });

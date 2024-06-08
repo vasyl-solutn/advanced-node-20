@@ -17,7 +17,6 @@ module.exports = app => {
   );
 
   app.get('/auth/logout', (req, res) => {
-    console.log('logout starting');
     req.logout();
     // res.redirect('/');
     // req.logout(function(err) {

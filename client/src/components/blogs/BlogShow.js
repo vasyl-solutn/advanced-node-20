@@ -7,6 +7,18 @@ function BlogShow({ fetchBlog }) {
   const { _id } = useParams();
   const [blog, setBlog] = useState(null);
 
+  const renderImage = () => {
+    if (blog.imageUrl) {
+      return (
+        <img
+          src={
+            `https://s3-us-west-2.amazonaws.com/${process.env.REACT_APP_BUCKET_NAME}/${blog.imageUrl}`
+          }
+        />
+      );
+    }
+  }
+
   useEffect(() => {
     const fetchAndSetBlog = async () => {
       const fetchedBlog = await fetchBlog(_id);
@@ -27,6 +39,7 @@ function BlogShow({ fetchBlog }) {
     <div>
       <h3>{title}</h3>
       <p>{content}</p>
+      {renderImage()}
     </div>
   );
 }

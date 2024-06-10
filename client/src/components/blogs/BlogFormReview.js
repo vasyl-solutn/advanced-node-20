@@ -11,7 +11,7 @@ const BlogFormReview = ({ onCancel, formValues, submitBlog, navigate }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    await submitBlog(formValues);
+    await submitBlog(formValues, image);
 
     navigate('/blogs');
   };
@@ -44,10 +44,24 @@ const BlogFormReview = ({ onCancel, formValues, submitBlog, navigate }) => {
     );
   }
 
+  const [image, setImage] = React.useState(null);
+
+  const handleFileUpload = (event) => {
+    setImage(event.target.files[0]);
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <h5>Please confirm your entries</h5>
       {renderFields()}
+
+      <h5>Add An Image</h5>
+      <input
+        onChange={handleFileUpload}
+        type="file"
+        accept="image/*"
+      />
+
       {renderButtons()}
     </form>
   );

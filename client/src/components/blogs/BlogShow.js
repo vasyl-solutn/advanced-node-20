@@ -12,7 +12,7 @@ function BlogShow({ fetchBlog }) {
       return (
         <img
           src={
-            `https://s3-us-west-2.amazonaws.com/${process.env.REACT_APP_BUCKET_NAME}/${blog.imageUrl}`
+            `https://s3-eu-central-1.amazonaws.com/${process.env.REACT_APP_BUCKET_NAME}/${blog.imageUrl}`
           }
         />
       );

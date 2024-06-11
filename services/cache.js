@@ -1,11 +1,9 @@
 const mongoose = require('mongoose');
 const redis = require('redis');
-// const util = require('util');
 
 const redisUrl = 'redis://127.0.0.1:6379';
 const client = redis.createClient({ url: redisUrl });
 client.connect();
-// client.hGet = util.promisify(client.hGet);
 const exec = mongoose.Query.prototype.exec;
 
 mongoose.Query.prototype.cache = function(options = {}) {
@@ -26,22 +24,29 @@ mongoose.Query.prototype.exec = async function() {
     })
   );
 
-  // See if we have a value for 'key' in redis
-  const cacheValue = await client.hGet(this.hashKey, key);
+  // store the expiration in the separated key. as hSet doesn't support EX: option
+  const expirationValidationKey = `${this.hashKey}-${key}-expiration-is-valid`
+  const isValid = await client.get(expirationValidationKey)
 
-  // If we do, return that
-  if (cacheValue) {
-    const doc = JSON.parse(cacheValue);
+  // see if the value stored in redis isn't expired yet
+  if (isValid) {
+    // See if we have a value for 'key' in redis
+    const cacheValue = await client.hGet(this.hashKey, key);
+    // If we do, return that
+    if (cacheValue) {
+      const doc = JSON.parse(cacheValue);
 
-    return Array.isArray(doc)
-      ? doc.map(d => new this.model(d))
-      : new this.model(doc);
+      return Array.isArray(doc)
+        ? doc.map(d => new this.model(d))
+        : new this.model(doc);
+    }
   }
 
   // Otherwise, issue the query and store the result in redis
   const result = await exec.apply(this, arguments);
 
-  client.hSet(this.hashKey, key, JSON.stringify(result), 'EX', 10);
+  await client.hSet(this.hashKey, key, JSON.stringify(result));
+  client.set(expirationValidationKey, 'true', { 'EX': 15})
 
   return result;
 };

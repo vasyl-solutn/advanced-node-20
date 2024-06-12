@@ -59,14 +59,15 @@ describe('When logged in', () => {
 
       expect(titleError).toEqual('You must provide a value');
       expect(contentError).toEqual('You must provide a value');
-
-      const result = await get(page, 'http://localhost:3000/api/blogs');
-      expect(result).toEqual({ error: 'You must log in!' });
     });
   });
 });
 
 describe('User is not logged in', () => {
+  beforeEach(async () => {
+    await page.goto('http://localhost:3000');
+  });
+
   describe('and run get /api/blogs', () => {
     test('request is prohibited', async () => {
       const result = await get(page, 'http://localhost:3000/api/blogs');

@@ -12,6 +12,7 @@ module.exports = app => {
     '/auth/google/callback',
     passport.authenticate('google'),
     (req, res) => {
+      console.log('auth callback')
       res.redirect('http://localhost:3000/blogs');
     }
   );
@@ -22,6 +23,7 @@ module.exports = app => {
     // req.logout(function(err) {
     //   console.log('logout');
     //   if (err) { return next(err); }
+      console.log('logout callback')
       res.redirect('http://localhost:3000/express-logout');
     // });
   });

@@ -23,6 +23,8 @@ module.exports = app => {
   });
 
   app.post('/api/blogs', requireLogin, cleanCache, async (req, res) => {
+    console.log('get blogs')
+
     const { title, content, imageUrl } = req.body;
 
     const blog = new Blog({

@@ -5,6 +5,7 @@ const userFactory = require('../factories/userFactory');
 async function build() {
   const browser = await puppeteer.launch({
     headless: true,
+    args: ['--no-sandbox']
   });
   const page = await browser.newPage();
   return { browser, page };
@@ -21,7 +22,7 @@ async function login(page) {
 
   await page.goto('http://localhost:3000/blogs');
 
-  await page.waitForSelector('a[href="http://localhost:5000/auth/logout"]');
+  await page.waitForSelector('a[href="http://localhost:3000/auth/logout"]');
 }
 
 async function getContentsOf(page, selector) {

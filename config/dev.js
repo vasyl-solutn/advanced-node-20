@@ -6,5 +6,6 @@ module.exports = {
   mongoURI: process.env.MONGO_URI,
   cookieKey: process.env.COOKIE_KEY,
   accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.SECRET_ACCESS_KEY
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  redisUrl: process.env.REDIS_URL
 }

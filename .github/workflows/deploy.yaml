@@ -38,11 +38,12 @@ jobs:
         run: |
           npm install
           npm run build
+
       - name: Start server
         run: |
-          npm run start
-      - name: so sleep
-        run: |
-          sleep 3
+          echo "Starting server..."
+          npm start &
+          sleep 10
+
       - name: Run tests
         run: npm run test

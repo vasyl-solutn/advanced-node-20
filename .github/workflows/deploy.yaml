@@ -40,7 +40,9 @@ jobs:
           npm run build
       - name: Start server
         run: |
-          nohup npm run start &
+          npm run start
+      - name: so sleep
+        run: |
           sleep 3
       - name: Run tests
         run: npm run test

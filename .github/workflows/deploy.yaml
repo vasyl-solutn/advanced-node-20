@@ -42,8 +42,7 @@ jobs:
       - name: Start server
         run: |
           echo "Starting server..."
-          npm start &
-          sleep 10
+          npm start
 
       - name: Run tests
         run: npm run test

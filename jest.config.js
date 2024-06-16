@@ -1,5 +1,5 @@
 module.exports = {
   preset: 'jest-puppeteer',
-  testTimeout: 10000,
+  testTimeout: 5000,
   setupFilesAfterEnv: ["./tests/setup.js"]
 };

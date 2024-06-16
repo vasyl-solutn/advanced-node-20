@@ -19,13 +19,8 @@ module.exports = app => {
 
   app.get('/auth/logout', (req, res) => {
     req.logout();
-    // res.redirect('/');
-    // req.logout(function(err) {
-    //   console.log('logout');
-    //   if (err) { return next(err); }
-      console.log('logout callback')
-      res.redirect('http://localhost:3000/express-logout');
-    // });
+    console.log('logout callback')
+    res.redirect('http://localhost:3000/express-logout');
   });
 
   app.get('/api/current_user', (req, res) => {

@@ -10,7 +10,7 @@ class Header extends Component {
       case false:
         return (
           <li>
-            <a href={'http://localhost:3000/auth/google'}>Login With Google upd</a>
+            <a href={process.env.REACT_APP_GOOGLE_LOGIN_URL}>Login With Google</a>
           </li>
         );
       default:
@@ -19,7 +19,7 @@ class Header extends Component {
             <Link to="/blogs">My Blogs</Link>
           </li>,
           <li key="2">
-            <a href={'http://localhost:3000/auth/logout'}>Logout</a>
+            <a href={process.env.REACT_APP_GOOGLE_LOGOUT_URL}>Logout</a>
           </li>
         ];
     }

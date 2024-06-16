@@ -22,7 +22,7 @@ async function login(page) {
 
   await page.goto('http://localhost:3000/blogs');
 
-  await page.waitForSelector('a[href="http://localhost:3000/auth/logout"]');
+  await page.waitForSelector('a[href$="/auth/logout"]');
 }
 
 async function getContentsOf(page, selector) {

@@ -10,12 +10,4 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
-
-  app.use(
-    '/a1uth',
-    createProxyMiddleware({
-      target: `${backendUrl}/auth`,
-      changeOrigin: true,
-    })
-  );
 };
